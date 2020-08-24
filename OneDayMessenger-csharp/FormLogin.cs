@@ -25,9 +25,9 @@ namespace OneDayMessenger_csharp
             public string user_nickname { get; set; }
             public string APIVersion { get; set; }
         }
-
-
-        private void button1_Click(object sender, EventArgs e)
+        
+        
+        private void buttonLogin_Click(object sender, EventArgs e)
         {
             SaveSettings();
 
@@ -36,13 +36,12 @@ namespace OneDayMessenger_csharp
                 listBoxLog.Items.Clear();
                 listBoxLog.Items.Add("start login process");
                 String Data = GetDataFromServer($"?phoneNumber={textBoxPhone.Text}");
-                
+
                 LoginObj login = JsonConvert.DeserializeObject<LoginObj>(Data);
                 if (login.error == "0")
                 {
-                    listBoxLog.Items.Add($"welcome back! {login.user_nickname}!");
-                    listBoxLog.Items.Add($"id: {login.user_id}, api ver: {login.APIVersion}");
-                }    
+                    OpenMessenger(login);
+                }
                 else
                 {
                     listBoxLog.Items.Add($"error: {login.error}");
@@ -57,6 +56,7 @@ namespace OneDayMessenger_csharp
             {
                 labelError.Visible = true;
                 labelError.Text = $"Error: bad length ({textBoxPhone.Text.Length}/11)";
+                return;
             }
         }
 
@@ -146,6 +146,15 @@ namespace OneDayMessenger_csharp
             {
                 SaveSettings();
             }
+
+            textBoxPhone.Text = settings.phoneNumber;
+        }
+
+        private void OpenMessenger(LoginObj user_uid)
+        {
+            FormMessenger form = new FormMessenger(user_uid);
+            form.Show();
+            this.Hide();
         }
 
     }

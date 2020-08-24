@@ -63,7 +63,7 @@
             this.buttonLogin.TabIndex = 2;
             this.buttonLogin.Text = "login";
             this.buttonLogin.UseVisualStyleBackColor = true;
-            this.buttonLogin.Click += new System.EventHandler(this.button1_Click);
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
             // labelError
             // 
