@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label1;
-            this.textBoxIMEI = new System.Windows.Forms.TextBox();
+            this.textBoxPhone = new System.Windows.Forms.TextBox();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.labelError = new System.Windows.Forms.Label();
             this.listBoxLog = new System.Windows.Forms.ListBox();
@@ -39,20 +39,20 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(96, 9);
+            label1.Location = new System.Drawing.Point(63, 9);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(90, 13);
+            label1.Size = new System.Drawing.Size(123, 13);
             label1.TabIndex = 1;
-            label1.Text = "login(15 numbers)";
+            label1.Text = "login(phone 11 numbers)";
             // 
-            // textBoxIMEI
+            // textBoxPhone
             // 
-            this.textBoxIMEI.Location = new System.Drawing.Point(12, 29);
-            this.textBoxIMEI.Name = "textBoxIMEI";
-            this.textBoxIMEI.Size = new System.Drawing.Size(251, 20);
-            this.textBoxIMEI.TabIndex = 0;
-            this.textBoxIMEI.Text = "000000000000000";
-            this.textBoxIMEI.TextChanged += new System.EventHandler(this.textBoxIMEI_TextChanged);
+            this.textBoxPhone.Location = new System.Drawing.Point(12, 29);
+            this.textBoxPhone.Name = "textBoxPhone";
+            this.textBoxPhone.Size = new System.Drawing.Size(251, 20);
+            this.textBoxPhone.TabIndex = 0;
+            this.textBoxPhone.Text = "00000000000";
+            this.textBoxPhone.TextChanged += new System.EventHandler(this.textBoxIMEI_TextChanged);
             // 
             // buttonLogin
             // 
@@ -91,9 +91,9 @@
             this.Controls.Add(this.labelError);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(label1);
-            this.Controls.Add(this.textBoxIMEI);
+            this.Controls.Add(this.textBoxPhone);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "login";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -102,7 +102,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxIMEI;
+        private System.Windows.Forms.TextBox textBoxPhone;
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.Label labelError;
         private System.Windows.Forms.ListBox listBoxLog;

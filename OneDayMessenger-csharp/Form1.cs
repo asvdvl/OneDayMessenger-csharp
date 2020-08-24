@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,26 +16,47 @@ namespace OneDayMessenger_csharp
     public partial class Form1 : Form
     {
         //private SettingsFields settings = new SettingsFields();
-        public String loginURL = "https://site.com/api/" + "login.php";
+        public String loginURL = "https://messenger.asvdev.com/api/" + "login.php";
 
         public Form1()
         {
             InitializeComponent();
         }
 
+        public class LoginObj
+        {
+            public string error { get; set; }
+            public string user_uid { get; set; }
+            public string user_id { get; set; }
+            public string user_nickname { get; set; }
+            public string APIVersion { get; set; }
+        }
+
+
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBoxIMEI.Text.Length == 15)
+            if (textBoxPhone.Text.Length == 11)
             {
                 listBoxLog.Items.Clear();
                 listBoxLog.Items.Add("start login process");
-                String Data = GetDataFromServer($"?imei={textBoxIMEI.Text}");
-                MessageBox.Show(Data);
+                String Data = GetDataFromServer($"?phoneNumber={textBoxPhone.Text}");
+                
+                LoginObj login = JsonConvert.DeserializeObject<LoginObj>(Data);
+                if (login.error == "0")
+                {
+                    listBoxLog.Items.Add($"welcome back! {login.user_nickname}!");
+                    listBoxLog.Items.Add($"id: {login.user_id}, api ver: {login.APIVersion}");
+                }    
+                else
+                {
+                    listBoxLog.Items.Add($"error: {login.error}");
+                }
+
             }
             else
             {
                 labelError.Visible = true;
-                labelError.Text = $"Error: bad length ({textBoxIMEI.Text.Length}/15)";
+                labelError.Text = $"Error: bad length ({textBoxPhone.Text.Length}/11)";
             }
         }
 
