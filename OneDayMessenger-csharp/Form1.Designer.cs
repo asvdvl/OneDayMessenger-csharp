@@ -32,6 +32,7 @@
             this.textBoxIMEI = new System.Windows.Forms.TextBox();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.labelError = new System.Windows.Forms.Label();
+            this.listBoxLog = new System.Windows.Forms.ListBox();
             label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -40,9 +41,9 @@
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(96, 9);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(87, 13);
+            label1.Size = new System.Drawing.Size(90, 13);
             label1.TabIndex = 1;
-            label1.Text = "login(40 symbols)";
+            label1.Text = "login(15 numbers)";
             // 
             // textBoxIMEI
             // 
@@ -50,7 +51,8 @@
             this.textBoxIMEI.Name = "textBoxIMEI";
             this.textBoxIMEI.Size = new System.Drawing.Size(251, 20);
             this.textBoxIMEI.TabIndex = 0;
-            this.textBoxIMEI.Text = "0123456789012345678901234567890123456789";
+            this.textBoxIMEI.Text = "000000000000000";
+            this.textBoxIMEI.TextChanged += new System.EventHandler(this.textBoxIMEI_TextChanged);
             // 
             // buttonLogin
             // 
@@ -72,17 +74,27 @@
             this.labelError.Text = "error:";
             this.labelError.Visible = false;
             // 
+            // listBoxLog
+            // 
+            this.listBoxLog.FormattingEnabled = true;
+            this.listBoxLog.Location = new System.Drawing.Point(12, 124);
+            this.listBoxLog.Name = "listBoxLog";
+            this.listBoxLog.Size = new System.Drawing.Size(245, 95);
+            this.listBoxLog.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(269, 145);
+            this.ClientSize = new System.Drawing.Size(269, 227);
+            this.Controls.Add(this.listBoxLog);
             this.Controls.Add(this.labelError);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(label1);
             this.Controls.Add(this.textBoxIMEI);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,6 +105,7 @@
         private System.Windows.Forms.TextBox textBoxIMEI;
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.Label labelError;
+        private System.Windows.Forms.ListBox listBoxLog;
     }
 }
 
