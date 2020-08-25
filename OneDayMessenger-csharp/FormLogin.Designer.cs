@@ -53,7 +53,7 @@
             this.textBoxPhone.Size = new System.Drawing.Size(251, 20);
             this.textBoxPhone.TabIndex = 0;
             this.textBoxPhone.Text = "00000000000";
-            this.textBoxPhone.TextChanged += new System.EventHandler(this.textBoxIMEI_TextChanged);
+            this.textBoxPhone.TextChanged += new System.EventHandler(this.TextBoxIMEI_TextChanged);
             // 
             // buttonLogin
             // 
@@ -63,7 +63,7 @@
             this.buttonLogin.TabIndex = 2;
             this.buttonLogin.Text = "login";
             this.buttonLogin.UseVisualStyleBackColor = true;
-            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
+            this.buttonLogin.Click += new System.EventHandler(this.ButtonLogin_Click);
             // 
             // labelError
             // 
@@ -90,10 +90,11 @@
             this.buttonSettings.TabIndex = 5;
             this.buttonSettings.Text = "settings";
             this.buttonSettings.UseVisualStyleBackColor = true;
-            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
+            this.buttonSettings.Click += new System.EventHandler(this.ButtonSettings_Click);
             // 
             // FormLogin
             // 
+            this.AcceptButton = this.buttonLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(271, 227);

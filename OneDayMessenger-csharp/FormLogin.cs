@@ -24,10 +24,17 @@ namespace OneDayMessenger_csharp
             public string user_id { get; set; }
             public string user_nickname { get; set; }
             public string APIVersion { get; set; }
+
+            public LoginObj()
+            {
+                error = "0";
+                user_id = "-1";
+                user_nickname = "Unknown";
+            }
         }
         
         
-        private void buttonLogin_Click(object sender, EventArgs e)
+        private void ButtonLogin_Click(object sender, EventArgs e)
         {
             SaveSettings();
 
@@ -51,6 +58,11 @@ namespace OneDayMessenger_csharp
             else if (textBoxPhone.Text.Length == 40 && ModifierKeys.HasFlag(Keys.Control))
             {
                 listBoxLog.Items.Add("login by uid");
+                LoginObj login = new LoginObj
+                {
+                    user_uid = textBoxPhone.Text
+                };
+                OpenMessenger(login);
             }
             else
             {
@@ -89,12 +101,12 @@ namespace OneDayMessenger_csharp
             LoadSettings();
         }
 
-        private void textBoxIMEI_TextChanged(object sender, EventArgs e)
+        private void TextBoxIMEI_TextChanged(object sender, EventArgs e)
         {
             labelError.Visible = false;
         }
 
-        private void buttonSettings_Click(object sender, EventArgs e)
+        private void ButtonSettings_Click(object sender, EventArgs e)
         {
             FormSettings form = new FormSettings(settings);
             if (form.ShowDialog() == DialogResult.OK)
@@ -152,7 +164,7 @@ namespace OneDayMessenger_csharp
 
         private void OpenMessenger(LoginObj user_uid)
         {
-            FormMessenger form = new FormMessenger(user_uid);
+            FormMessenger form = new FormMessenger(user_uid, settings);
             form.Show();
             this.Hide();
         }

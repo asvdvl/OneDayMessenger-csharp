@@ -12,7 +12,7 @@ namespace OneDayMessenger_csharp
             set = settings;
         }
 
-        private void buttonOK_Click(object sender, EventArgs e)
+        private void ButtonOK_Click(object sender, EventArgs e)
         {
             set.loginURL = textBoxLoginURL.Text;
             set.getMessageURL = textBoxGetMessageURL.Text;
