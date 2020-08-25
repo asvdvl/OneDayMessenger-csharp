@@ -19,17 +19,17 @@ namespace OneDayMessenger_csharp
 
         public class LoginObj
         {
-            public string error { get; set; }
-            public string user_uid { get; set; }
-            public string user_id { get; set; }
-            public string user_nickname { get; set; }
+            public string Error { get; set; }
+            public string User_uid { get; set; }
+            public string User_id { get; set; }
+            public string User_nickname { get; set; }
             public string APIVersion { get; set; }
 
             public LoginObj()
             {
-                error = "0";
-                user_id = "-1";
-                user_nickname = "Unknown";
+                Error = "0";
+                User_id = "-1";
+                User_nickname = "Unknown";
             }
         }
         
@@ -45,13 +45,13 @@ namespace OneDayMessenger_csharp
                 String Data = GetDataFromServer($"?phoneNumber={textBoxPhone.Text}");
 
                 LoginObj login = JsonConvert.DeserializeObject<LoginObj>(Data);
-                if (login.error == "0")
+                if (login.Error == "0")
                 {
                     OpenMessenger(login);
                 }
                 else
                 {
-                    listBoxLog.Items.Add($"error: {login.error}");
+                    listBoxLog.Items.Add($"error: {login.Error}");
                 }
 
             }
@@ -60,7 +60,7 @@ namespace OneDayMessenger_csharp
                 listBoxLog.Items.Add("login by uid");
                 LoginObj login = new LoginObj
                 {
-                    user_uid = textBoxPhone.Text
+                    User_uid = textBoxPhone.Text
                 };
                 OpenMessenger(login);
             }
