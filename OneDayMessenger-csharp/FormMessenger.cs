@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace OneDayMessenger_csharp
@@ -16,7 +17,8 @@ namespace OneDayMessenger_csharp
         readonly FormLogin.LoginObj loginObj;
         private static HttpClient httpclient;
         readonly SettingsFields settings;
-        private int idLastMessage;
+        private int idLastMessage = 0;
+        private static System.Timers.Timer updateTimer = new System.Timers.Timer(3000);
 
         private class IDOfLastMessageObj
         {
@@ -99,11 +101,19 @@ namespace OneDayMessenger_csharp
 
             Thread thread = new Thread(GetLastMessageId);
             thread.Start();
+
+            updateTimer.Elapsed += GetLastMessages;
+            updateTimer.AutoReset = true;
+            updateTimer.Enabled = true;
         }
 
-        private void GetLastMessages()
+        private void GetLastMessages(Object source, ElapsedEventArgs e)
         {
-            GetMessages(true, idLastMessage);
+            new Thread(() =>
+            {
+                GetMessages(true, idLastMessage);
+            }
+            ).Start();            
         }
 
         private void GetMessages(bool after, int id)
@@ -117,10 +127,14 @@ namespace OneDayMessenger_csharp
                 getMessagesObj getMess = JsonConvert.DeserializeObject<getMessagesObj>(task.Result);
                 if (getMess.error == "0")
                 {
-                    IEnumerable<messages> SorteMessages = getMess.messages.OrderBy(messages => messages.mes_id);
-                    foreach(var elements in SorteMessages)
+                    if(getMess.messages != null)
                     {
-                        AddMesssage(elements.mes_id, elements.nickname, elements.mes_text, elements.mes_time);
+                        IEnumerable<messages> SorteMessages = getMess.messages.OrderBy(messages => messages.mes_id);
+                        idLastMessage = SorteMessages.Max(messages => messages.mes_id);
+                        foreach (var elements in SorteMessages)
+                        {
+                            AddMesssage(elements.mes_id, elements.nickname, elements.mes_text, elements.mes_time);
+                        }
                     }
                 }
                 else
@@ -141,7 +155,7 @@ namespace OneDayMessenger_csharp
                 if (idOfLast.error == "0")
                 {
                     AddMesssage(0, "system", $"load messages", "");
-                    GetMessages(false, idOfLast.IDOfLastMessage);
+                    GetMessages(false, idOfLast.IDOfLastMessage+1);
                 }
                 else
                 {

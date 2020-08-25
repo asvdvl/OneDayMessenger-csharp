@@ -67,7 +67,7 @@
             // columnHeaderText
             // 
             this.columnHeaderText.Text = "Message";
-            this.columnHeaderText.Width = 585;
+            this.columnHeaderText.Width = 508;
             // 
             // columnHeaderTime
             // 
