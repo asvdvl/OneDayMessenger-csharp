@@ -44,16 +44,30 @@ namespace OneDayMessenger_csharp
                 listBoxLog.Items.Add("start login process");
                 String Data = GetDataFromServer($"?phoneNumber={textBoxPhone.Text}");
 
-                LoginObj login = JsonConvert.DeserializeObject<LoginObj>(Data);
-                if (login.Error == "0")
+                if (Data != null)
                 {
-                    OpenMessenger(login);
+                    try
+                    {
+                        LoginObj login = JsonConvert.DeserializeObject<LoginObj>(Data);
+                        
+                        if (login.Error == "0")
+                        {
+                            OpenMessenger(login);
+                        }
+                        else
+                        {
+                            listBoxLog.Items.Add($"error: {login.Error}");
+                        }
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        listBoxLog.Items.Add($"error: {ex.Message}");
+                    }
                 }
                 else
                 {
-                    listBoxLog.Items.Add($"error: {login.Error}");
+                    listBoxLog.Items.Add($"error: No data receive");
                 }
-
             }
             else if (textBoxPhone.Text.Length == 40 && ModifierKeys.HasFlag(Keys.Control))
             {

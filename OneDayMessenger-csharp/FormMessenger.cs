@@ -129,50 +129,64 @@ namespace OneDayMessenger_csharp
         }
 
         private void GetMessages(bool after, int id)
-        {            
-            var parameters = new Dictionary<string, string> { { "user_uid", $"{loginObj.User_uid}" }, {after? "after":"before", $"{id}"}, { "limit", "50" } };
-            var task = GetOrSendDataServerPOSTAsync(settings.getMessageURL, parameters);
-            task.Wait();
-
-            if (task.Result.Length != 0)
+        {
+            try
             {
-                GetMessagesObj getMess = JsonConvert.DeserializeObject<GetMessagesObj>(task.Result);
-                if (getMess.error == "0")
+                var parameters = new Dictionary<string, string> { { "user_uid", $"{loginObj.User_uid}" }, { after ? "after" : "before", $"{id}" }, { "limit", "50" } };
+                var task = GetOrSendDataServerPOSTAsync(settings.getMessageURL, parameters);
+                task.Wait();
+
+                if (task.Result.Length != 0)
                 {
-                    if(getMess.messages != null)
+                    GetMessagesObj getMess = JsonConvert.DeserializeObject<GetMessagesObj>(task.Result);
+                    if (getMess.error == "0")
                     {
-                        IEnumerable<Messages> SorteMessages = getMess.messages.OrderBy(messages => messages.mes_id);
-                        idLastMessage = SorteMessages.Max(messages => messages.mes_id);
-                        foreach (var elements in SorteMessages)
+                        if (getMess.messages != null)
                         {
-                            AddMesssage(elements.mes_id, elements.nickname, elements.mes_text, elements.mes_time);
+                            IEnumerable<Messages> SorteMessages = getMess.messages.OrderBy(messages => messages.mes_id);
+                            idLastMessage = SorteMessages.Max(messages => messages.mes_id);
+                            foreach (var elements in SorteMessages)
+                            {
+                                AddMesssage(elements.mes_id, elements.nickname, elements.mes_text, elements.mes_time);
+                            }
                         }
                     }
+                    else
+                    {
+                        AddMesssage(0, "system", $"error: {getMess.error}", "");
+                    }
                 }
-                else
-                {
-                    AddMesssage(0, "system", $"error: {getMess.error}", "");
-                }
+            }
+            catch (Exception e)
+            {
+                AddMesssage(0, "system", $"error get messages: {e.Message}", "");
             }
         }
 
         private async void GetLastMessageId()
         {
-            var response = await httpclient.GetAsync(settings.getIDOfLastMessageURL+ $"?user_uid={loginObj.User_uid}");
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                string data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var response = await httpclient.GetAsync(settings.getIDOfLastMessageURL + $"?user_uid={loginObj.User_uid}");
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    string data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                IDOfLastMessageObj idOfLast = JsonConvert.DeserializeObject<IDOfLastMessageObj>(data);
-                if (idOfLast.error == "0")
-                {
-                    AddMesssage(0, "system", $"load messages", "");
-                    GetMessages(false, idOfLast.IDOfLastMessage+1);
+                    IDOfLastMessageObj idOfLast = JsonConvert.DeserializeObject<IDOfLastMessageObj>(data);
+                    if (idOfLast.error == "0")
+                    {
+                        AddMesssage(0, "system", $"load messages", "");
+                        GetMessages(false, idOfLast.IDOfLastMessage + 1);
+                    }
+                    else
+                    {
+                        AddMesssage(0, "system", $"error: {idOfLast.error}", "");
+                    }
                 }
-                else
-                {
-                    AddMesssage(0, "system", $"error: {idOfLast.error}", "");
-                }
+            }
+            catch (System.Net.Http.HttpRequestException exp)
+            {
+                AddMesssage(0, "system", $"error: {exp.Message}", ""); 
             }
         }
 
